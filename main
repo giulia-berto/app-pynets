@@ -58,7 +58,7 @@ mkdir -p output tmp
 
 #construct arguments for optional inputs
 optional=""
-conf=$(jq -r .regressors config.json)
+conf=`pwd`/$(jq -r .regressors config.json)
 if [ $conf != "null" ]; then
     optional="$optional -conf $conf"
 fi
