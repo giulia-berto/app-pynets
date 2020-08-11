@@ -58,31 +58,51 @@ mkdir -p output tmp
 
 #construct arguments for optional inputs
 optional=""
-conf=`pwd`/$(jq -r .regressors config.json)
-if [ $conf != "null" ]; then
-    optional="$optional -conf $conf"
+
+dwi=$(jq -r .dwi config.json)
+if [ $dwi != "null" ]; then
+    bval=`pwd`/$(jq -r .bvals config.json)
+    bvec=`pwd`/$(jq -r .bvecs config.json)
+    optional="$optional -dwi $(pwd)/$dwi -bval $bval -bvec $bvec"
+fi
+
+bold=$(jq -r .bold config.json)
+if [ $bold != "null" ];then 
+    conf=`pwd`/$(jq -r .regressors config.json)
+    optional="$optional -func $(pwd)/$bold -conf $conf"
+fi
+
+mask=$(jq -r .mask config.json)
+if [ $mask != "null" ];then 
+    optional="$optional -m $(pwd)/$mask"
+fi
+
+useratlas=$(jq -r .useratlas config.json)
+if [ $useratlas != "null" ];then
+    optional="$optional -m $(pwd)/$useratlas/parc.nii.gz"
+else
+    optional="$optional -a $(jq -r .atlas config.json)"
 fi
 
 singularity run -e docker://dpys/pynets:latest pynets \
     `pwd`/output \
     -id brainlife \
-    -p $(jq .p config.json) \
-    -func `pwd`/$(jq -r .bold config.json) \
     -anat `pwd`/$(jq -r .t1 config.json) \
-    -dwi `pwd`/$(jq -r .dwi config.json) \
-    -bval `pwd`/$(jq -r .bvals config.json) \
-    -bvec `pwd`/$(jq -r .bvecs config.json) \
-    $optional \
     -work `pwd`/tmp \
-    -a 'BrainnetomeAtlasFan2016' 'destrieux2009_rois' \
-    -mod partcorr csd \
+    $optional \
+    -p $(jq -r .p config.json) \
     -min_thr $(jq -r .min_thr config.json) \
     -max_thr $(jq -r .max_thr config.json) \
     -step_thr $(jq -r .step_thr config.json) \
+    -mod partcorr csd \
     -plt \
     -n Vis \
     -mplx 2 \
     -pm 6,20
 
+# graph
+# diffusion 
+# diffusion / functional
+# functional
 
 
