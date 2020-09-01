@@ -84,7 +84,7 @@ else
     optional="$optional -a $(jq -r .atlas config.json)"
 fi
 
-singularity run -e docker://dpys/pynets:latest pynets \
+singularity run -e docker://dpys/pynets:eced3a7677f261f0f2d7b69c4b7d11a0eca7fdfb pynets \
     `pwd`/output \
     -id brainlife \
     -anat `pwd`/$(jq -r .t1 config.json) \
