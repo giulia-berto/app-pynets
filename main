@@ -69,7 +69,11 @@ fi
 bold=$(jq -r .bold config.json)
 if [ $bold != "null" ];then 
     conf=`pwd`/$(jq -r .regressors config.json)
-    optional="$optional -func $(pwd)/$bold -conf $conf"
+    if [ $conf != "null" ];then
+        optional="$optional -func $(pwd)/$bold -conf $conf"
+    else;
+        optional="$optional -func $(pwd)/$bold"
+    fi
 fi
 
 mask=$(jq -r .mask config.json)
@@ -94,11 +98,7 @@ singularity run -e docker://dpys/pynets:68e7264312e7a5c7a61997cb19fb1607652559a9
     -min_thr $(jq -r .min_thr config.json) \
     -max_thr $(jq -r .max_thr config.json) \
     -step_thr $(jq -r .step_thr config.json) \
-    -mod partcorr csd \
-    -plt \
-    -n Default \
-    -mplx 2 \
-    -pm 6,20
+    -mod $(jq -r .mod config.json)
 
 # graph
 # diffusion 
