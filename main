@@ -71,7 +71,7 @@ if [ $bold != "null" ];then
     conf=`pwd`/$(jq -r .regressors config.json)
     if [ $conf != "null" ];then
         optional="$optional -func $(pwd)/$bold -conf $conf"
-    else;
+    else
         optional="$optional -func $(pwd)/$bold"
     fi
 fi
@@ -90,7 +90,7 @@ fi
 
 singularity run -e docker://dpys/pynets:68e7264312e7a5c7a61997cb19fb1607652559a9 pynets \
     `pwd`/output \
-    -id brainlife \
+    -id $(jq -r .id config.json) \
     -anat `pwd`/$(jq -r .t1 config.json) \
     -work `pwd`/tmp \
     $optional \
