@@ -59,17 +59,21 @@ mkdir -p output tmp
 #construct arguments for optional inputs
 optional=""
 
-dwi=$(jq -r .dwi config.json)
-if [ $dwi != "null" ]; then
-    bval=`pwd`/$(jq -r .bvals config.json)
-    bvec=`pwd`/$(jq -r .bvecs config.json)
-    optional="$optional -dwi $(pwd)/$dwi -bval $bval -bvec $bvec"
-fi
+#dwi=$(jq -r .dwi config.json)
+#if [ $dwi != "null" ]; then
+#    bval=`pwd`/$(jq -r .bvals config.json)
+#    bvec=`pwd`/$(jq -r .bvecs config.json)
+#    optional="$optional -dwi $(pwd)/$dwi -bval $bval -bvec $bvec"
+#fi
 
-bold=$(jq -r .bold config.json)
-if [ $bold != "null" ];then 
-    conf=`pwd`/$(jq -r .regressors config.json)
-    optional="$optional -func $(pwd)/$bold -conf $conf"
+#if [ $bold != "null" ];then 
+#    conf=`pwd`/$(jq -r .regressors config.json)
+#    optional="$optional -func $(pwd)/$bold -conf $conf"
+#fi
+
+conf=$(jq -r .regressors config.json)
+if [ $conf != "null" ];then 
+    optional="$optional -conf $(pwd)/$conf"
 fi
 
 mask=$(jq -r .mask config.json)
@@ -86,17 +90,19 @@ fi
 
 singularity run -e docker://dpys/pynets:68e7264312e7a5c7a61997cb19fb1607652559a9 pynets \
     `pwd`/output \
-    -id brainlife \
+    -id $(jq -r ._inputs[0].meta.subject config.json) \
     -anat `pwd`/$(jq -r .t1 config.json) \
+    -func `pwd`/$(jq -r .task config.json) \
     -work `pwd`/tmp \
     $optional \
     -p $(jq -r .p config.json) \
     -min_thr $(jq -r .min_thr config.json) \
     -max_thr $(jq -r .max_thr config.json) \
     -step_thr $(jq -r .step_thr config.json) \
-    -mod partcorr csd \
+    -thr $(jq -r .thr config.json) \
+    -mod $(jq -r .mod config.json) \
     -plt \
-    -n Default \
+    -n $(jq -r .n config.json) \
     -mplx 2 \
     -pm 6,20
 
