@@ -92,7 +92,7 @@ singularity run -e docker://dpys/pynets:68e7264312e7a5c7a61997cb19fb1607652559a9
     `pwd`/output \
     -id $(jq -r ._inputs[0].meta.subject config.json) \
     -anat `pwd`/$(jq -r .t1 config.json) \
-    -func `pwd`/$(jq -r .task config.json) \
+    -func `pwd`/$(jq -r .bold config.json) \
     -work `pwd`/tmp \
     $optional \
     -p $(jq -r .p config.json) \
