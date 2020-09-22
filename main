@@ -59,23 +59,6 @@ mkdir -p output tmp
 #construct arguments for optional inputs
 optional=""
 
-dwi=$(jq -r .dwi config.json)
-if [ $dwi != "null" ]; then
-    bval=`pwd`/$(jq -r .bvals config.json)
-    bvec=`pwd`/$(jq -r .bvecs config.json)
-    optional="$optional -dwi $(pwd)/$dwi -bval $bval -bvec $bvec"
-fi
-
-bold=$(jq -r .bold config.json)
-if [ $bold != "null" ];then
-    conf=`pwd`/$(jq -r .regressors config.json)
-    if [ $conf != "null" ];then
-        optional="$optional -func $(pwd)/$bold -conf $conf"
-    else
-        optional="$optional -func $(pwd)/$bold"
-    fi
-fi
-
 mask=$(jq -r .mask config.json)
 if [ $mask != "null" ];then
     optional="$optional -m $(pwd)/$mask"
@@ -88,44 +71,17 @@ else
     optional="$optional -a $(jq -r .atlas config.json)"
 fi
 
-min_thr=$(jq -r .min_thr config.json)
-if [ $min_thr != "null" ];then
-    optional="$optional -min_thr $min_thr"
-    optional="$optional -max_thr $max_thr"
-    optional="$optional -step_thr $step_thr"
-else
-    optional="$optional -thr $thr"
-fi
-
 # Boolean options
 [ "$(jq -r .mst config.json)" == "true" ] && optional="$optional -mst"
 [ "$(jq -r .dt config.json)" == "true" ] && optional="$optional -dt"
 [ "$(jq -r .embed config.json)" == "true" ] && optional="$optional -embed"
 [ "$(jq -r .df config.json)" == "true" ] && optional="$optional -df"
-[ "$(jq -r .plt config.json)" == "true" ] && optional="$optional -plt"
 [ "$(jq -r .bin config.json)" == "true" ] && optional="$optional -bin"
 [ "$(jq -r .spheres config.json)" == "true" ] && optional="$optional -spheres"
 
-prune=$(jq -r .p config.json)
-[ "$prune" != "1" ] && optional="$optional -p $prune"
 
 norm=$(jq -r .norm config.json)
 [ "$norm" != "1" ] && optional="$optional -norm $norm"
-
-mplx=$(jq -r .mplx config.json)
-[ "$mplx" != "0" ] && optional="$optional -mplx $mplx"
-
-rsn=$(jq -r .n config.json)
-[ "$rsn" != "null" ] && optional="$optional -n $rsn"
-
-em=$(jq -r .em config.json)
-[ "$em" != "mean" ] && optional="$optional -em $em"
-
-sm=$(jq -r .sm config.json)
-[ "$sm" != "0" ] && optional="$optional -sm $sm"
-
-hp=$(jq -r .hp config.json)
-[ "$hp" != "0" ] && optional="$optional -hp $hp"
 
 dg=$(jq -r .dg config.json)
 [ "$dg" != "det" ] && optional="$optional -dg $dg"
@@ -138,11 +94,23 @@ tol=$(jq -r .tol config.json)
 
 singularity run -e docker://dpys/pynets:fc7c423fb99ade39e1f408721e93b97a12168aa0 pynets \
     `pwd`/output \
-    -id $(jq -r .id config.json) \
+    -id $(jq -r ._inputs[0].meta.subject config.json) \
     -anat `pwd`/$(jq -r .t1 config.json) \
-    -work `pwd`/work \
+    -dwi `pwd`$(jq -r .dwi config.json) \
+    -bval `pwd`$(jq -r .bvals config.json) \
+    -bvec `pwd`$(jq -r .bvecs config.json) \
+    -work `pwd`/tmp \
+    $optional \
+    -p $(jq -r .p config.json) \
+    -min_thr $(jq -r .min_thr config.json) \
+    -max_thr $(jq -r .max_thr config.json) \
+    -step_thr $(jq -r .step_thr config.json) \
+    -thr $(jq -r .thr config.json) \
     -mod $(jq -r .mod config.json) \
-    $optional
+    -plt \
+    -n $(jq -r .n config.json) \
+    -mplx 2 \
+    -pm 6,20
 
 # graph
 # diffusion
