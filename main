@@ -89,7 +89,7 @@ else
 fi
 
 #singularity run -e docker://dpys/pynets:68e7264312e7a5c7a61997cb19fb1607652559a9 pynets \
-singularity run -e docker://dpys/pynets:6e505e4011b85b9bb30bfdb39ecd32eb6028a406 pynets \
+singularity run -e docker://dpys/pynets:latest pynets \
     `pwd`/output \
     -id $(jq -r ._inputs[0].meta.subject config.json) \
     -anat `pwd`/$(jq -r .t1 config.json) \
