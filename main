@@ -93,7 +93,7 @@ tol=$(jq -r .tol config.json)
 [ "$tol" != "8" ] && optional="$optional -tol $tol"
 
 #singularity run -e docker://dpys/pynets:fc7c423fb99ade39e1f408721e93b97a12168aa0 pynets \
-singularity run -e docker://dpys/pynets:6e505e4011b85b9bb30bfdb39ecd32eb6028a406 pynets \
+singularity run -e docker://dpys/pynets:latest pynets \
     `pwd`/output \
     -id $(jq -r ._inputs[0].meta.subject config.json) \
     -anat `pwd`/$(jq -r .t1 config.json) \
