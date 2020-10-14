@@ -33,7 +33,7 @@ Pisner, D., Hammonds R. (2020) PyNets: A Reproducible Workflow for Structural an
 You can submit this App online at [https://doi.org/10.25663/bl.app.392](https://doi.org/10.25663/bl.app.392) via the "Execute" tab.
 
 Inputs: \
-This App run the multimodal workflow, i.e. both Structural and Functional Connectome Ensemble Learning. The mandatory inputs are:
+This App runs the multimodal workflow, i.e. both Structural and Functional Connectome Ensemble Learning. The mandatory inputs are:
 * a T1w anatomical image (can be preprocessed using any method, but should be in its native scanner anatomical space)
 * a BOLD/EPI series (can be preprocessed using any method, but should in the same scanner anatomical space as the T1w)
 * a DWI series (should ideally be in its native diffusion MRI (dMRI) space (though can also be co-registered to the T1w image) and must contain at least one B0 for reference)
