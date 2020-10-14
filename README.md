@@ -4,12 +4,6 @@
 # app-pynets
 A Reproducible post-processing workflow for Structural and Functional Connectome Ensemble Learning. PyNets leverages Nilearn and Dipy fMRI and dMRI libraries to specify any of a variety of methodological choices and sampling individual structural and functional connectome estimates.
 
-Write the following here...
-
-1) What the App does, and how it does it at the basic level.
-2) Briefly explain what 1) means for novice users in a language that 1st year psychology student can understand it.
-3) Briefly description of input / output files.
-
 ### Authors
 - Derek Pisner (dpisner@utexas.edu)
 
