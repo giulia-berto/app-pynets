@@ -1,8 +1,8 @@
 [![Abcdspec-compliant](https://img.shields.io/badge/ABCD_Spec-v1.1-green.svg)](https://github.com/brain-life/abcd-spec)
 [![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.346-blue.svg)](https://doi.org/10.25663/brainlife.app.346)
 
-# app-example-documentation
-This is an example of how to write documentation (readme.md and license.md for Apps on brainlife.io)
+# app-pynets
+A Reproducible post-processing workflow for Structural and Functional Connectome Ensemble Learning. PyNets leverages Nilearn and Dipy fMRI and dMRI libraries to specify any of a variety of methodological choices and sampling individual structural and functional connectome estimates.
 
 Write the following here...
 
@@ -11,11 +11,12 @@ Write the following here...
 3) Briefly description of input / output files.
 
 ### Authors
-- [Bradley Caron](bacaron@iu.edu)
-- [Soichi Hayashi](hayashis@iu.edu)
+- Derek Pisner (dpisner@utexas.edu)
 
 ### Contributors
-- [Franco Pestilli](frakkopesto@gmail.com)
+- Soichi Hayashi (hayashis@iu.edu)
+- Giulia Bertò (giulia.berto.4@gmail.com)
+
 
 ### Funding Acknowledgement
 brainlife.io is publicly funded and for the sustainability of the project it is helpful to Acknowledge the use of the platform. We kindly ask that you acknowledge the funding below in your publications and code reusing this code.
@@ -26,33 +27,43 @@ brainlife.io is publicly funded and for the sustainability of the project it is 
 [![NSF-IIS-1912270](https://img.shields.io/badge/NSF_IIS-1912270-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1912270)
 [![NIH-NIBIB-R01EB029272](https://img.shields.io/badge/NIH_NIBIB-R01EB029272-green.svg)](https://grantome.com/grant/NIH/R01-EB029272-01)
 
+### References
+Official installation, user-guide, and API docs now live [here](https://pynets.readthedocs.io/) 
+
 ### Citations
-We kindly ask that you cite the following articles when publishing papers and code using this code. 
+A manuscript is in preparation, but for now, please cite all uses with the following entry: 
 
-1. Avesani, P., McPherson, B., Hayashi, S. et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. Sci Data 6, 69 (2019). [https://doi.org/10.1038/s41597-019-0073-y](https://doi.org/10.1038/s41597-019-0073-y)
-
-#### MIT Copyright (c) 2020 brainlife.io The University of Texas at Austin and Indiana University
-
+Pisner, D., Hammonds R. (2020) PyNets: A Reproducible Workflow for Structural and Functional Connectome Ensemble Learning. Poster session presented at the 26th Annual Meeting of the Organization for Human Brain Mapping. https://github.com/dPys/PyNets.
 
 ## Running the App 
-
 ### On Brainlife.io
+You can submit this App online at [https://doi.org/10.25663/bl.app.392](https://doi.org/10.25663/bl.app.392) via the "Execute" tab.
 
-You can submit this App online at [https://doi.org/10.25663/bl.app.1](https://doi.org/10.25663/bl.app.1) via the "Execute" tab.
+Inputs: \
+This App run the multimodal workflow, i.e. both Structural and Functional Connectome Ensemble Learning. The mandatory inputs are:
+* a T1w anatomical image (can be preprocessed using any method, but should be in its native scanner anatomical space)
+* a BOLD/EPI series (can be preprocessed using any method, but should in the same scanner anatomical space as the T1w)
+* a DWI series (should ideally be in its native diffusion MRI (dMRI) space (though can also be co-registered to the T1w image) and must contain at least one B0 for reference)
+
+PyNets is a post-processing workflow which means that input files should already be preprocessed. Minimally, all DWI, BOLD, and T1W image inputs should be motion-corrected (and ideally also susceptibility-corrected + denoised). 
+
+Other optional inputs are: confound regressors, brain mask, parcellation, and binarized Regions of Interest (ROIs).  
+
+Outputs: \
+At the moment, the output is an unstructured dataset containing all the output files [ADD MORE INFO ABOUT OUTPUTS HERE]. 
+
 
 ### Running Locally (on your machine)
-
 1. git clone this repo.
 2. Inside the cloned directory, create `config.json` with something like the following content with paths to your input files.
 
 ```json
 {
-        "track": "./input/track/track.tck",
-	"dwi": "./input/dtiinit/dwi_aligned_trilin_noMEC.nii.gz",
-	"bvecs": "./input/dtiinit/dwi_aligned_trilin_noMEC.nii.bvecs",
-	"bvals": "./input/dtiinit/dwi_aligned_trilin_noMEC.nii.bvals",
-        "life_discretization": 360,
-        "num_iterations": 100
+        "anat": "./input/anat/t1.nii.gz",
+	"task": "./input/func/bold.nii.gz",
+	"dwi": "./input/dwi/dwi.nii.gz",
+	"bvecs": "./input/bvecs/dwi.bvecs",
+	"bvals": "./input/bva;s/dwi.bvals",
 }
 ```
 
