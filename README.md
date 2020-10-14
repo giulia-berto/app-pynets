@@ -2,7 +2,7 @@
 [![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-bl.app.346-blue.svg)](https://doi.org/10.25663/brainlife.app.346)
 
 # app-pynets
-A Reproducible post-processing workflow for Structural and Functional Connectome Ensemble Learning. PyNets leverages Nilearn and Dipy fMRI and dMRI libraries to specify any of a variety of methodological choices and sampling individual structural and functional connectome estimates.
+A Reproducible post-processing workflow for Structural and Functional Connectome Ensemble Learning. PyNets leverages Nilearn and Dipy fMRI and dMRI libraries to specify any of a variety of methodological choices and sampling individual structural and functional connectome estimates. PyNets is a post-processing workflow, which means that it can be run manually on virtually any preprocessed fMRI or dMRI data.
 
 ### Authors
 - Derek Pisner (dpisner@utexas.edu)
@@ -44,7 +44,6 @@ Other optional inputs are: confound regressors, brain mask, parcellation, and bi
 
 Outputs: \
 At the moment, the output is an unstructured dataset containing all the output files [ADD MORE INFO ABOUT OUTPUTS HERE]. 
-
 
 ### Running Locally (on your machine)
 1. git clone this repo.
